@@ -1,0 +1,5 @@
+[
+  { "nombre": "Vulcanizacion", "precio": 20000, "img": "media/auto1.webp" },
+  { "nombre": "Cambio de Frenos", "precio": 50000, "img": "media/auto2.jpg" },
+  { "nombre": "Cambio de aceite", "precio": 15000, "img": "media/auto3.png" }
+]

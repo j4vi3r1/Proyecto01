@@ -1,0 +1,587 @@
+body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f5; }
+header { background: #333; color: #fff; padding: 1rem; text-align: center; position: relative; }
+nav { background: #444; padding: 0.5rem; text-align: center; }
+nav a { color: #fff; margin: 0 1rem; text-decoration: none; }
+main { max-width: 1200px; margin: 2rem auto; padding: 1rem; background: #fff; border-radius: 8px; }
+.productos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+    gap: 1.25rem;
+    align-items: start;
+    padding: 0.5rem;
+}
+.producto {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 320px; /* altura uniforme para que filas queden alineadas */
+}
+.prod-img-wrap {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom: .6rem;
+}
+.prod-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.producto.placeholder {
+    background: #fff8f0;
+    border-style: dashed;
+    color: #888;
+}
+.producto.placeholder .placeholder-img {
+    background: linear-gradient(90deg, #f0f0f0, #e9e9e9);
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+}
+.producto h3 { margin: 0.5rem 0; font-size: 1.2rem;}
+.producto p { margin: 0.25rem 0 1rem 0; font-weight: 600; color: #222; }
+.producto button { background: #28a745; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
+.producto button[disabled] { background: #cccccc; cursor: not-allowed; color: #666; }
+.admin-controls button { padding: 0.4rem 0.6rem; border-radius: 4px; cursor: pointer; border: none; }
+footer { background: #333; color: #fff; text-align: center; padding: 1rem; margin-top: 2rem; }
+
+/* ===== Restaurar estilos de botones generales y específicos ===== */
+button {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #28a745;
+    color: #fff;
+    border: none;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background .12s ease, transform .08s ease, box-shadow .12s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+button:hover { transform: translateY(-2px); }
+button:active { transform: translateY(0); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+
+/* Header / controles */
+.header-controls button,
+#toggle-theme {
+    background: #444444;
+    color: #faf3f3;
+    margin-left: 0.6rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
+}
+
+/* Botones de login/registro */
+.login-btn {
+    background: #444444;
+    color: #faf3f3;
+    padding: 0.45rem 0.8rem;
+    border-radius: 6px;
+    margin-left: 0.4rem;
+}
+
+/* Botones de modal (entrar / registrar / cerrar) */
+.login-box button,
+.login-box .close-modal {
+    background: #28a745;
+    color: #fff;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Close modal específico */
+.close-modal {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.4rem;
+    background: transparent;
+    color: #666;
+    font-size: 1.2rem;
+    padding: 0.2rem 0.4rem;
+}
+
+/* Botón flotante (asegura estilo si cambias id/clase) */
+#floating-cart {
+    background: #444;
+    color: #fff;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Botón agregar producto (admin) */
+.add-product-btn {
+    background: #ffc107;
+    color: #111;
+    font-weight: 700;
+    padding: 0.55rem 1rem;
+}
+
+/* Asegurar que botones deshabilitados mantengan apariencia adecuada */
+button[disabled] {
+    background: #cfcfcf;
+    color: #777;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Tema oscuro */
+body.dark-mode { background: #181818; color: #e0e0e0; }
+body.dark-mode header { background: #111; color: #fff; }
+body.dark-mode nav { background: #222; }
+body.dark-mode nav a { color: #fff; }
+body.dark-mode main { background: #232323; color: #e0e0e0; }
+body.dark-mode .producto { background: #222; border-color: #444; }
+body.dark-mode .producto button { background: #007b2a; }
+body.dark-mode .producto button:hover { background: #005c1a; }
+body.dark-mode footer { background: #111; color: #fff; }
+body.dark-mode .login-box { background: #232323; color: #e0e0e0; }
+body.dark-mode .comentarios-section { background: #232323; color: #e0e0e0; }
+body.dark-mode .comentario { background: #181818; border-color: #333; }
+body.dark-mode .comentarios-section textarea { background: #181818; color: #e0e0e0; border-color: #444; }
+
+/* Tema verde (logueado) */
+body.green-mode { background: #e6fff2; color: #1b3d2f; }
+body.green-mode header { background: #2e8b57; color: #fff; }
+body.green-mode nav { background: #3cb371; }
+body.green-mode nav a { color: #fff; }
+body.green-mode main { background: #f0fff8; color: #1b3d2f; }
+body.green-mode .producto { background: #495750; border-color: #a2e6c7; }
+body.green-mode .producto button { background: #43c59e; }
+body.green-mode .producto button:hover { background: #2e8b57; }
+body.green-mode footer { background: #2e8b57; color: #fff; }
+body.green-mode .login-box { background: #f0fff8; color: #1b3d2f; }
+body.green-mode .comentarios-section { background: #e0ffe6; color: #1b3d2f; }
+body.green-mode .comentario { background: #f0fff8; border-color: #a2e6c7; }
+body.green-mode .comentarios-section textarea { background: #f0fff8; color: #1b3d2f; border-color: #a2e6c7; }
+/* Botón modo menta */
+body.green-mode #toggle-theme {
+    background: #aafadf;
+    color: #1b3d2f;
+}
+/* Tema verde oscuro (bosque) */
+body.green-mode.dark-green {
+    background: #133d2e; color: #e6fff2;
+}
+body.green-mode.dark-green header { background: #0d2a1f; color: #e6fff2; }
+body.green-mode.dark-green nav { background: #14543a; }
+body.green-mode.dark-green nav a { color: #e6fff2; }
+body.green-mode.dark-green main { background: #1b3d2f; color: #e6fff2; }
+body.green-mode.dark-green .producto { background: #14543a; border-color: #1b3d2f; }
+body.green-mode.dark-green .producto button { background: #1b8a5a; }
+body.green-mode.dark-green .producto button:hover { background: #0d2a1f; }
+body.green-mode.dark-green footer { background: #0d2a1f; color: #e6fff2; }
+body.green-mode.dark-green .login-box { background: #1b3d2f; color: #e6fff2; }
+body.green-mode.dark-green .comentarios-section { background: #14543a; color: #e6fff2; }
+body.green-mode.dark-green .comentario { background: #133d2e; border-color: #1b8a5a; }
+body.green-mode.dark-green .comentarios-section textarea { background: #133d2e; color: #e6fff2; border-color: #1b8a5a; }
+body.green-mode.dark-green #toggle-theme {
+    background: #1b8a5a;
+    color: #323936;
+}
+
+/* botón flotante para abrir el menu del listado de compras */
+
+
+.cart-float-container {
+    display: flex;
+    position: sticky;
+    flex-direction: column;
+    pointer-events: none;
+    justify-content: space-between;
+    top: 0;
+}
+
+#floating-cart {
+    pointer-events: all;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #444;
+    color: #fff;
+    font-size: 28px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,.25);
+    z-index: 1000;
+}
+
+
+
+/* oculto (agregar/remover clase 'hidden' desde JS) */
+#floating-cart.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-50%) scale(.95);
+}
+
+/* tamaños móviles */
+@media (max-width: 480px) {
+    #floating-cart {
+        width: 52px;
+        height: 52px;
+        font-size: 1.3rem;
+        right: 0.6rem;
+    }
+}
+
+/* temas */
+body.dark-mode #floating-cart { background: #10b981; color: #072018; }
+body.green-mode.dark-green #floating-cart { background: #1b8a5a; color: #e6fff2; }
+/* ===== Header layout con logo centrado y controles a ambos lados ===== */
+.site-header {
+    position: relative;
+    background: #333;
+    color: #fff;
+    padding: 1rem 0.5rem 0.5rem 0.5rem;
+    text-align: center;
+}
+.header-left,
+.header-right {
+    position: absolute;
+    top: 0.9rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+}
+.header-left { left: 1rem; }
+.header-right { right: 1rem; }
+
+.header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.site-title {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+/* Logo / ilustración del gato */
+.cat-illustration {
+    width: 92px;
+    height: auto;
+    display: block;
+    margin-top: 0.25rem;
+    color: #fff;
+    filter: none;
+
+}
+
+/* Ajuste móvil */
+@media (max-width: 720px) {
+    .cat-illustration { width: 72px; }
+}
+
+/* Nav situado debajo del header centrado */
+.main-nav {
+    background: #444;
+    margin-top: 0.75rem;
+    padding: 0.5rem 0;
+    text-align: center;
+}
+.main-nav a {
+    color: #fff;
+    margin: 0 1rem;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* ===== Modal (login / register) ===== */
+.login-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12,12,12,0.5);
+    z-index: 4000;
+}
+.login-box {
+    background: #fff;
+    color: #111;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    min-width: 300px;
+    max-width: 420px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+.login-box input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 0.95rem;
+}
+.login-box h2 { margin: 0 0 0.4rem 0; text-align: left; }
+.login-box .close-modal {
+    position: absolute;
+    right: 0.6rem;
+    top: 0.4rem;
+    background: transparent;
+    color: #666;
+    font-size: 1.4rem;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para el formulario de reseñas */
+.reseña-section { max-width:720px; margin:1rem auto; padding:1rem; }
+#comentario-nombre {
+    font-size: 1rem;
+    width:100%;
+    padding:.6rem;
+    border-radius:6px;
+    border:1px solid #d0d0d0;
+    box-sizing:border-box;
+}
+#comentario-text {
+    font-size: 1rem;
+    min-height: 160px; /* agrandado */
+    line-height: 1.4;
+    padding: .8rem;
+    border-radius: 6px;
+    border: 1px solid #d0d0d0;
+    width:100%;
+    box-sizing:border-box;
+}
+
+/* Lista de comentarios */
+#comentarios-list .comentario {
+    background: #ffffff;
+    color: #16321e;                /* texto principal oscuro */
+    border: 1px solid rgba(0,0,0,0.06);
+    padding: 0.75rem;
+    border-radius: 6px;
+    box-shadow: none;
+}
+
+/* Botón enviar */
+#comentario-submit {
+    background:#28a745;
+    color:#fff;
+    border:none;
+    padding:.6rem 1rem;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* Asegurar contraste en modo oscuro/verde para logo (si es SVG blanco se puede remover filter) */
+body.green-mode .cat-illustration,
+body.dark-mode .cat-illustration { filter: none; }
+
+/* Ajustes móviles */
+@media (max-width: 720px) {
+    .header-left, .header-right { top: 0.6rem; }
+    .cat-illustration { width: 72px; }
+    .site-title { font-size: 1.4rem; }
+}
+
+/* admin + dark (verde oscuro) */
+body.dark-green {
+    --miau-bg-panel: #0f2416;   /* fondo del contenedor grande */
+    --miau-card-bg:  #122a1f;   /* fondo de cada tarjeta */
+    --miau-border:   rgba(255,255,255,0.06);
+    --miau-text:     #e8f7ec;
+}
+
+/* contenedor principal / panel que rodea las tarjetas */
+body.dark-green main,
+body.dark-green .productos,
+body.dark-green .reseña-section,
+body.dark-green .reseñas-lista,
+body.dark-green .content-panel {
+    background: var(--miau-bg-panel);
+    color: var(--miau-text);
+}
+
+/* tarjetas producto */
+body.dark-green .producto {
+    background: var(--miau-card-bg);
+    color: var(--miau-text);
+    border: 1px solid var(--miau-border);
+    box-shadow: none;
+}
+
+/* títulos / precios / textos dentro de la tarjeta */
+body.dark-green .producto h3,
+body.dark-green .producto p,
+body.dark-green .producto .admin-controls,
+body.dark-green .producto .prod-img-wrap {
+    color: var(--miau-text);
+}
+
+/* imagen wrapper y placeholders */
+body.dark-green .prod-img-wrap { background: rgba(255,255,255,0.02); }
+body.dark-green .producto.placeholder {
+    background: rgba(255,255,255,0.02);
+    color: var(--miau-text);
+    border-style: dashed;
+}
+
+/* botones dentro de tarjetas (mantener contraste) */
+body.dark-green .producto button {
+    background: #2b6b3f;
+    color: #fff;
+    border: none;
+}
+
+/* nav/header tweaks para dark-green */
+body.dark-green .site-header { background: #122a1b; }
+body.dark-green .main-nav { background: #16321e; color: var(--miau-text); }
+body.dark-green .main-nav a { color: var(--miau-text); }
+
+/* Fondo exterior más oscuro cuando está en modo admin dark-green */
+html, body { height: 100%; }
+
+body.dark-green {
+    /* color más oscuro para el "fondo" general de la página */
+    background: #072114; /* verde muy oscuro - ajusta si quieres otro tono */
+    color: #e8f7ec;
+}
+
+/* Si hay un contenedor exterior que antes tenía fondo claro, forzarlo transparente
+   para dejar ver el nuevo fondo oscuro */
+.content-wrap,
+.site-wrapper,
+.page-background {
+    background: transparent !important;
+}
+
+/* fin ajustes dark-green */
+
+/* Contacto: mantener fondo blanco en las tarjetas pero texto oscuro */
+.contact-section .card,
+.contact-section .contact-box,
+contacto .card,
+contacto .contact-box,
+#contacto .card,
+#contacto .contact-box,
+.contact-wrapper .card,
+.contact-wrapper .contact-box {
+    background: #ffffff !important;
+    color: #222222 !important; /* texto negro/oscuro */
+}
+
+/* asegúrate de que los elementos de texto dentro de las tarjetas hereden color */
+.contact-section .card h1,
+.contact-section .card h2,
+.contact-section .card h3,
+.contact-section .card p,
+.contact-section .card li,
+.contact-section .contact-box h3,
+.contact-section .contact-box p {
+    color: #222222 !important;
+}
+
+/* Forzar mismo comportamiento en modo admin oscuro (dark-green) */
+body.dark-green .contact-section .card,
+body.dark-green .contact-section .contact-box,
+body.dark-green .contacto .card,
+body.dark-green #contacto .card {
+    background: #ffffff !important;
+    color: #222222 !important;
+}
+body.dark-green .contact-section .card p,
+body.dark-green .contact-section .card h3 {
+    color: #222222 !important;
+}
+
+/* ===== Forzar texto oscuro en Contacto / Reseñas cuando está dark-green ===== */
+body.dark-green .contact-section,
+body.dark-green .contact-section .card,
+body.dark-green .contact-section .contact-box,
+body.dark-green .contact-wrapper,
+body.dark-green .contacto,
+body.dark-green #contacto,
+body.dark-green .reseñas-lista,
+body.dark-green #comentarios-list,
+body.dark-green .content-panel,
+body.dark-green .page-panel,
+body.dark-green .panel,
+body.dark-green .box {
+    background: #ffffff !important;   /* caja blanca */
+    color: #0b2a1b !important;        /* texto oscuro */
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Aplicar a todos los elementos hijos (headings, p, li, a, small, span, labels, inputs) */
+body.dark-green .contact-section * ,
+body.dark-green .contact-wrapper * ,
+body.dark-green .contacto * ,
+body.dark-green #contacto * ,
+body.dark-green .reseñas-lista * ,
+body.dark-green #comentarios-list * ,
+body.dark-green .panel * ,
+body.dark-green .box * {
+    color: #0b2a1b !important;
+    background: transparent !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+/* Asegurar títulos y párrafos visibles */
+body.dark-green .contact-section h1,
+body.dark-green .contact-section h2,
+body.dark-green .contact-section h3,
+body.dark-green .contact-section p,
+body.dark-green .contact-section li,
+body.dark-green .contact-section small,
+body.dark-green .reseñas-lista h3,
+body.dark-green #comentarios-list .comentario,
+body.dark-green #comentarios-list .comentario * {
+    color: #0b2a1b !important;
+}
+
+/* Enlaces dentro de las cajas */
+body.dark-green .contact-section a,
+body.dark-green .contacto a,
+body.dark-green .reseñas-lista a,
+body.dark-green #comentarios-list a {
+    color: #0b2a1b !important;
+}
+
+/* Inputs / textarea dentro de cajas: fondo blanco y texto oscuro */
+body.dark-green .contact-section input,
+body.dark-green .contact-section textarea,
+body.dark-green .contact-section label,
+body.dark-green .contact-section .form-control {
+    color: #0b2a1b !important;
+    background: #ffffff !important;
+    border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* Si hay reglas inline/very-specific que sigan ganando, pega aquí el selector completo mostrado por DevTools
+   (ejemplo: .mi-contenedor .inner .card .card-body p) y lo añado con !important. */
